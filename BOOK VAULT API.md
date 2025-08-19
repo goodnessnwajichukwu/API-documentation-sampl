@@ -1,110 +1,167 @@
 
-# ![Banner](https://i.pinimg.com/736x/3T/FF/zo/3TFfzOZnX.jpg)  
-# 📚 BookVault API Documentation  
+# 📚 Book Vault REST API
+![Banner](https://i.pinimg.com/736x/2d/6e/b6/2d6eb6e6b8c932efc7880a2f7cfa9f63.jpg)
 
-**Version:** v1.0  
-**Last Updated:** August 18, 2025  
-**Author:** Goodness Nwajichukwu – Technical Writer  
+The **Book Vault REST API** lets developers manage books, authors, and categories with full CRUD operations.
 
 ---
 
-## 📖 Overview  
-The **BookVault REST API** allows developers to build applications that can manage books, authors, and categories.  
-- Add new books  
-- Retrieve book information  
-- Update book details  
-- Delete books  
-
-**Base URL:**
-
-https://api.bookvault.io/v1
-
----
-
-## ![Authentication](https://i.pinimg.com/736x/1G/Q9/Mi/1GQ9MiqIc.jpg) Authentication  
-
-The API uses **Bearer Token Authentication (JWT)**.  
-
-Include your token in the header:
-
-Authorization: Bearer {your_token}
+## 📑 Table of Contents
+- [Authentication](#-authentication)
+- [Books](#-books)
+- [Authors](#-authors)
+- [Categories](#-categories)
+- [Rate Limits](#-rate-limits)
+- [Error Handling](#-error-handling)
+- [Best Practices & Precautions](#-best-practices--precautions)
+- [FAQs](#-faqs)
+- [Changelog](#-changelog)
 
 ---
 
-## ![Rate Limits](https://i.pinimg.com/736x/3u/IK/ID/3uIKIDPfZ.jpg) Rate Limits  
+## 🔑 Authentication
+![Authentication](https://i.pinimg.com/736x/9c/36/11/9c361193c3f6fa1ab93c15d729aa1b68.jpg)
 
-- Free Tier: **100 requests/minute**  
-- Pro Tier: **500 requests/minute**  
-- Responses include headers:  
-  - `X-RateLimit-Limit`  
-  - `X-RateLimit-Remaining`  
-  - `X-RateLimit-Reset`  
+All requests require an **API key**. Include it in your headers:
+
+```http
+Authorization: Bearer YOUR_API_KEY
+
+> ⚠️ Note: Never share your API key publicly. Rotate keys regularly for security.
+
+
+
 
 ---
 
-## ![Endpoints](https://i.pinimg.com/736x/3D/6Z/TJ/3D6ZTJooj.jpg) Endpoints  
+## 📘 Books
 
-### 🔹 Get All Books  
-**Endpoint:** `GET /books`  
 
-```bash
-curl -X GET "https://api.bookvault.io/v1/books" \
-  -H "Authorization: Bearer your_token"
 
-Response:
+GET /books → Retrieve all books
+
+POST /books → Add a new book
+
+GET /books/{id} → Retrieve a single book
+
+PUT /books/{id} → Update a book
+
+DELETE /books/{id} → Delete a book
+
+
+Sample Request
+
+GET /books/1
+
+Sample Response
 
 {
-  "books": [
-    {
-      "id": "101",
-      "title": "The Silent Observer",
-      "author": "Jane Doe",
-      "published_year": 2022
-    }
-  ]
+  "id": 1,
+  "title": "The Silent Ocean",
+  "author": "Jane Doe",
+  "category": "Fiction",
+  "published": "2023-09-14"
 }
 
 
 ---
 
-🔹 Add a New Book
+## 👩‍💻 Authors
 
-Endpoint: POST /books
+GET /authors → Retrieve authors
 
-curl -X POST "https://api/bookvault.io/v1/books" \
-  -H "Authorization: Bearer your_token" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "title": "Whispers of Tomorrow",
-        "author": "John Smith",
-        "published_year": 2025
-      }'
+POST /authors → Add a new author
 
-Response:
+
+
+---
+
+## 🏷️ Categories
+
+GET /categories → Retrieve categories
+
+POST /categories → Add a new category
+
+
+
+---
+
+## 📊 Rate Limits
+
+
+
+100 requests per minute per API key
+
+Exceeding the limit returns:
+
 
 {
-  "id": "102",
-  "title": "Whispers of Tomorrow",
-  "author": "John Smith",
-  "published_year": 2025,
-  "status": "created"
+  "error": "Rate limit exceeded. Please try again later."
 }
 
 
 ---
 
- Example Code Snippet
+## ⚠️ Error Handling
 
-💻 You can test endpoints using curl, Postman, or integrate with any programming language that supports HTTP requests.
+
+
+Here’s the Markdown table code that creates the error table:
+
+| Error Code | Meaning              | Resolution                     |
+|------------|----------------------|--------------------------------|
+| 400        | Bad Request          | Check your request syntax      |
+| 401        | Unauthorized         | Invalid or missing API key     |
+| 403        | Forbidden            | You don’t have permission      |
+| 404        | Not Found            | Resource doesn’t exist         |
+| 429        | Too Many Requests    | Slow down, respect rate limits |
+| 500        | Server Error         | Try again later                |
+
+---
+
+## 🛡️ Best Practices & Precautions
+
+1. Always use HTTPS to protect sensitive data.
+
+
+2. Store API keys in environment variables.
+
+
+3. Use pagination for large data requests.
+
+
+4. Retry with exponential backoff when handling rate limits.
+
+
+5. Never expose API keys in client-side code.
+
+
 
 
 ---
 
-📝 Notes
+## ❓ FAQs
 
-All requests must be sent via HTTPS
+Q: Do I need to pay for an API key?
+A: No, API keys are free for up to 10,000 requests per month.
 
-Use proper headers for JSON (Content-Type: application/json)
+Q: Can I search for books by category?
+A: Yes →
 
-Handle rate limits gracefully in your application
+GET /books?category=Fiction
 
+Q: What data format is supported?
+A: All responses are in JSON.
+
+
+---
+
+## 📝 Changelog
+
+v1.0.0 (2025-08-19)
+
+Initial release with Books, Authors, and Categories endpoints
+
+Added authentication & rate limits
+
+Basic error handling included
